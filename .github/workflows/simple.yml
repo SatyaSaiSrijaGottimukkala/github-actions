@@ -11,7 +11,7 @@ jobs:
         runs-on : ubuntu-latest
         steps :
             - name : echo
-              run : echo "running ${{requirement}}"
+              run : echo running ${{ inputs.requirement }}
             - name : cli-version
               run : aws --version
 
