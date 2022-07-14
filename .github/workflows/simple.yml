@@ -1,5 +1,11 @@
 name : shell-commands
-on: [push]
+on: 
+   workflow_dispatch:
+    inputs:
+      requirement:
+        description: 'Test scenario tags'
+        required: true 
+        type: string
 jobs:
     run-shell-commands:
         runs-on : ubuntu-latest
