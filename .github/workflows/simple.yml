@@ -6,12 +6,16 @@ on:
         description: 'Test scenario tags'
         required: true 
         type: string
+      requirement02:
+        description: 'Test scenario tags'
+        required: true 
+        type: string
 jobs:
     run-shell-commands:
         runs-on : ubuntu-latest
         steps :
             - name : echo
-              run : echo running ${{ inputs.requirement }}
+              run : echo "running ${{ inputs.requirement }} ${{ inputs.requirement02 }}"
             - name : cli-version
               run : aws --version
 
