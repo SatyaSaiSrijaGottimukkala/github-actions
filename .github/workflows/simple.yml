@@ -1,15 +1,19 @@
-name : shell-commands
+name : stop ec2 instance workflow
 on: 
    workflow_dispatch:
     inputs:
-      requirement:
-        description: 'Test scenario tags'
+      region:
+        description: 'APAC_REGION | EMEA_REGION | SA_REGION'
         required: true 
         type: string
-      requirement02:
-        description: 'Test scenario tags'
+      rolename:
+        description: 'APAC_PROD_ROLE | APAC_STAGE_ROLE | EMEA_STAGE_ROLE | EMEA_PROD_ROLE | SA_STAGE_ROLE | SA_PROD_ROLE'
         required: true 
         type: string
+      ec2_instance_arn : 
+        description : enter instance arn
+        required : true
+        type : string
 jobs:
     run-shell-commands:
         runs-on : ubuntu-latest
@@ -18,5 +22,14 @@ jobs:
               run : echo "running ${{ inputs.requirement }} ${{ inputs.requirement02 }}"
             - name : cli-version
               run : aws --version
+            - name : aws credentials
+              uses : aws-actions/configure-aws-credentials@v1
+              with : 
+                role-to-assume : ${{ inputs.rolename }}
+                aws-region : ${{ inputs.region }}
+            - name : stop ec2 instance
+              run : aws ec2 stop-instances --instance-ids ${{ inputs.ec2_instance_arn }}
+            
+
 
     
