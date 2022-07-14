@@ -24,9 +24,12 @@ jobs:
               run : aws --version
             - name : aws credentials
               uses : aws-actions/configure-aws-credentials@v1
+              env :
+                role : ${{ inputs.rolename }}
+                region : ${{ inputs.region }}
               with : 
-                role-to-assume : ${{ secrets./${{ inputs.rolename }} }}
-                aws-region : ${{ secrets./${{ inputs.region }} }}
+                role-to-assume : ${{ secrets[format('{0}_A', github.event.inputs.rolename] }}
+                aws-region : ${{ secrets[format('{0}_A', env.region] }}
             - name : stop ec2 instance
               run : aws ec2 stop-instances --instance-ids ${{ inputs.ec2_instance_arn }}
             
