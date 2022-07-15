@@ -2,7 +2,7 @@ name : stop ec2 instance workflow
 on: 
    workflow_dispatch:
     inputs:
-      region:
+      # region:
       #   description: 'APAC_REGION | EMEA_REGION | SA_REGION'
       #   required: true 
       #   type: string
