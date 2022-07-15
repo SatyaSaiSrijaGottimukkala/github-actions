@@ -3,13 +3,13 @@ on:
    workflow_dispatch:
     inputs:
       region:
-        description: 'APAC_REGION | EMEA_REGION | SA_REGION'
-        required: true 
-        type: string
-      rolename:
-        description: 'APAC_PROD_ROLE | APAC_STAGE_ROLE | EMEA_STAGE_ROLE | EMEA_PROD_ROLE | SA_STAGE_ROLE | SA_PROD_ROLE'
-        required: true 
-        type: string
+      #   description: 'APAC_REGION | EMEA_REGION | SA_REGION'
+      #   required: true 
+      #   type: string
+      # rolename:
+      #   description: 'APAC_PROD_ROLE | APAC_STAGE_ROLE | EMEA_STAGE_ROLE | EMEA_PROD_ROLE | SA_STAGE_ROLE | SA_PROD_ROLE'
+      #   required: true 
+      #   type: string
       ec2_instance_arn : 
         description : enter instance arn
         required : true
@@ -19,14 +19,14 @@ jobs:
         runs-on : ubuntu-latest
         steps :
             - name : echo
-              run : echo "running ${{ inputs.requirement }} ${{ inputs.requirement02 }}"
+              run : echo "running "
             - name : cli-version
               run : aws --version
             - name : aws credentials
               uses : aws-actions/configure-aws-credentials@v1
-              env :
-                role : ${{ inputs.rolename }}
-                region : ${{ inputs.region }}
+              # env :
+              #   role : ${{ inputs.rolename }}
+              #   region : ${{ inputs.region }}
               with :
                 aws-access-key-id : ${{ secrets.ACCESS_KEY_APAC }}
                 aws-secret-access-key : ${{ secrets.SECRET_ACCESS_KEY_APAC }}
