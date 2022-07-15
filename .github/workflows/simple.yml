@@ -28,8 +28,8 @@ jobs:
               #   role : ${{ inputs.rolename }}
               #   region : ${{ inputs.region }}
               with :
-                aws-access-key-id : ${{ secrets.ACCESS_KEY_APAC }}
-                aws-secret-access-key : ${{ secrets.SECRET_ACCESS_KEY_APAC }}
+                aws-access-key-id : ${{ secrets.ROLE_ACCESS_KEY }}
+                aws-secret-access-key : ${{ secrets.ROLE_SECRET_ACCESS_KEY }}
                 # role-to-assume : ${{ secrets.APAC_STAGE_ROLE }}
                 aws-region : ${{ secrets.APAC_REGION }}
             - name : stop ec2 instance
