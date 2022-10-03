@@ -1,0 +1,16 @@
+name : check the environment
+on : 
+  workflow_dispatch:
+    inputs: 
+      environment_selection : 
+        description : give an environment
+        type: string
+        required : true
+
+jobs:
+  settingup_environment:
+    environment : ${{ inputs.environment_selection }}
+    runs-on : ubuntu-latest
+    steps:
+      - name: echoing
+        run : echo ${{secrets.VALUE_ASSOCIATED}}
