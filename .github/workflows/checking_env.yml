@@ -13,4 +13,6 @@ jobs:
     runs-on : ubuntu-latest
     steps:
       - name: echoing
-        run : echo ${{secrets.VALUE_ASSOCIATED}}
+        run : |
+          echo ${{secrets.VALUE_ASSOCIATED}}
+          echo ${{ environment.name }}
