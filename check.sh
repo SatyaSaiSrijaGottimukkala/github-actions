@@ -12,3 +12,6 @@ for data in "${arr2[@]}"
 do 
      echo $data
 done
+
+
+list_apac=$(git diff master trialbranch --name-only | grep DataFolder/apac-stage)
