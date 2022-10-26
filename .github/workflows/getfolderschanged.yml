@@ -8,10 +8,8 @@ jobs :
     steps : 
     - name : getbranch
       run : echo "branchin= ${{ github.ref_name }}" >> $GITHUB_OUTPUT
-    - name: listall
-      run : |
-        echo "$(ls)"
-        echo "$(pwd)"
+    - name: Checkout
+      uses: actions/checkout@v3
     - name : getfoldersunderDataFolder
       run : |
         arr=()
