@@ -18,8 +18,8 @@ jobs :
         for i in $(ls -d DataFolder/apac-stage/*/); do echo "${i}"; arr+=($i); done
         for value in "${arr[@]}"
         do 
-            echo "list_apac=$(git diff origin/master HEAD --name-only | grep $value)" >> $GITHUB_OUTPUT
-            echo $list_apac
+            list_apac=$(git diff origin/master HEAD --name-only | grep $value)
+            echo "$list_apac" >> $GITHUB_OUTPUT
             # if [[ $list_apac != "" ]]
             # then
             #       echo 
