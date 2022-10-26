@@ -28,10 +28,13 @@ jobs :
             echo "list_emea=$(git diff master $branch --name-only | grep $value)" >> $GITHUB_OUTPUT 
             echo $list_emea
         done
+    outputs:
+      APAC_LIST : ${{ steps.getfoldersunderDataFolder.outputs.list_apac }}
+      EMEA_LIST : ${{ steps.getfoldersunderDataFolder.outputs.list_emea }}
 
   apacJob:
-    if :  job.commitjob.steps.getfoldersunderDataFolder.outputs.list_apac != "" 
+    if :  needs.commitjob.outputs.APAC_LIST != "" 
     runs-on: ubuntu-latest
     steps : 
     - name: chekingapaclist
-      run : echo "${job.commitjob.steps.getfoldersunderDataFolder.outputs.list_apac}"
+      run : echo "${{ needs.commitjob.outputs.APAC_LIST }}"
