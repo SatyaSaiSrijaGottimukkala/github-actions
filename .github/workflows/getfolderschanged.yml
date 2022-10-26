@@ -27,7 +27,7 @@ jobs :
         for i in $(ls -d DataFolder/emea-stage/*/); do arr+=($i); done
         for value in "${arr[@]}"
         do 
-            echo "list_emea=$(git diff master ${{ steps.getbranch.outputs.branchin }} --name-only | grep $value)" >> $GITHUB_OUTPUT 
+            echo "list_emea=$(git diff master '${steps.getbranch.outputs.branchin}' --name-only | grep $value)" >> $GITHUB_OUTPUT 
             echo $list_emea
         done
     outputs:
