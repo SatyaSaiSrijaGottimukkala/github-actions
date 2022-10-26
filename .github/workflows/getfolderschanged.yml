@@ -1,0 +1,37 @@
+name : getallchangedfiles
+on : 
+  push:
+    
+jobs :
+  commitjob: 
+    runs-on: ubuntu-latest
+    steps : 
+    - name : get branch
+      run : echo branch=${git branch --show-current}
+    - name : getfoldersunderDataFolder
+      run : |
+        arr=()
+        for i in $(ls -d DataFolder/apac-stage/*/); do arr+=($i); done
+        for value in "${arr[@]}"
+        do 
+            echo "list_apac=$(git diff master $branch --name-only | grep $value)" >> $GITHUB_OUTPUT
+            echo $list_apac
+            # if [[ $list_apac != "" ]]
+            # then
+            #       echo 
+            # fi    
+        done
+        arr=()
+        for i in $(ls -d DataFolder/emea-stage/*/); do arr+=($i); done
+        for value in "${arr[@]}"
+        do 
+            echo "list_emea=$(git diff master $branch --name-only | grep $value)" >> $GITHUB_OUTPUT 
+            echo $list_emea
+        done
+
+  apacJob:
+    if : ${steps.getfoldersunderDataFolder.outputs.list_apac} != "" 
+    runs-on: ubuntu-latest
+    steps : 
+    - name: chekingapaclist
+      run : echo "${steps.getfoldersunderDataFolder.outputs.list_apac}"

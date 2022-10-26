@@ -1,6 +1,6 @@
 name : getting branch name
 on : 
-  push :
+  workflow_dispatch :
 jobs : 
   getbranchname :
     runs-on : ubuntu-latest
