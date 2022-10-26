@@ -9,14 +9,16 @@ jobs :
     - name : getbranch
       run : echo "branchin=${{ github.ref_name }}" >> $GITHUB_OUTPUT
     - name: Checkout
-      uses: actions/checkout@v1
+      uses: actions/checkout@v3
+      with:
+        fetch-depth: '0'
     - name : getfoldersunderDataFolder
       run : |
         arr=()
         for i in $(ls -d DataFolder/apac-stage/*/); do echo "${i}"; arr+=($i); done
         for value in "${arr[@]}"
         do 
-            echo "list_apac=$(git diff origin/master origin/${{steps.getbranch.outputs.branchin}} --name-only | grep $value)" >> $GITHUB_OUTPUT
+            echo "list_apac=$(git diff origin/master HEAD --name-only | grep $value)" >> $GITHUB_OUTPUT
             echo $list_apac
             # if [[ $list_apac != "" ]]
             # then
