@@ -7,13 +7,13 @@ jobs :
     runs-on: ubuntu-latest
     steps : 
     - name : getbranch
-      run : echo "branchin= ${{ github.ref_name }}" >> $GITHUB_OUTPUT
+      run : echo "branchin=${{ github.ref_name }}" >> $GITHUB_OUTPUT
     - name: Checkout
       uses: actions/checkout@v3
     - name : getfoldersunderDataFolder
       run : |
         arr=()
-        for i in $(ls -d DataFolder/apac-stage/*/); do arr+=($i); done
+        for i in $(ls -d DataFolder/apac-stage/*/); do echo "${i}"; arr+=($i); done
         for value in "${arr[@]}"
         do 
             echo "list_apac=$(git diff master ${{ steps.getbranch.outputs.branchin }} --name-only | grep $value)" >> $GITHUB_OUTPUT
