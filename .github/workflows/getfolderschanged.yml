@@ -30,8 +30,8 @@ jobs :
         done
 
   apacJob:
-    if :  steps.getfoldersunderDataFolder.outputs.list_apac != "" 
+    if :  job.commitjob.steps.getfoldersunderDataFolder.outputs.list_apac != "" 
     runs-on: ubuntu-latest
     steps : 
     - name: chekingapaclist
-      run : echo "${steps.getfoldersunderDataFolder.outputs.list_apac}"
+      run : echo "${job.commitjob.steps.getfoldersunderDataFolder.outputs.list_apac}"
