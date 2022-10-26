@@ -32,3 +32,5 @@ do
 
      
 done
+
+git ls-tree -d -r trialbranch  --name-only | grep DataFolder/apac-stage/
