@@ -16,7 +16,7 @@ jobs :
         for i in $(ls -d DataFolder/apac-stage/*/); do echo "${i}"; arr+=($i); done
         for value in "${arr[@]}"
         do 
-            echo "list_apac=$(git diff master ${{ steps.getbranch.outputs.branchin }} --name-only | grep $value)" >> $GITHUB_OUTPUT
+            echo "list_apac=$(git diff master ${steps.getbranch.outputs.branchin} --name-only | grep $value)" >> $GITHUB_OUTPUT
             echo $list_apac
             # if [[ $list_apac != "" ]]
             # then
