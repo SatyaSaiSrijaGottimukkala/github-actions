@@ -11,7 +11,7 @@ jobs :
     - name : getfoldersunderDataFolder
       run : |
         arr=()
-        for i in $(ls -d DataFolder/apac-stage/*/); do arr+=($i); done
+        for i in $(git ls -d DataFolder/apac-stage/*/); do arr+=($i); done
         for value in "${arr[@]}"
         do 
             echo "list_apac=$(git diff master ${{ steps.getbranch.outputs.branchin }} --name-only | grep $value)" >> $GITHUB_OUTPUT
@@ -22,7 +22,7 @@ jobs :
             # fi    
         done
         arr=()
-        for i in $(ls -d DataFolder/emea-stage/*/); do arr+=($i); done
+        for i in $(git ls -d DataFolder/emea-stage/*/); do arr+=($i); done
         for value in "${arr[@]}"
         do 
             echo "list_emea=$(git diff master ${{ steps.getbranch.outputs.branchin }} --name-only | grep $value)" >> $GITHUB_OUTPUT 
