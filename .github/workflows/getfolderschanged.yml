@@ -33,7 +33,7 @@ jobs :
       EMEA_LIST : ${{ steps.getfoldersunderDataFolder.outputs.list_emea }}
 
   apacJob:
-    if :  needs.commitjob.outputs.APAC_LIST != "" 
+    if :  needs.commitjob.outputs.APAC_LIST != ''
     runs-on: ubuntu-latest
     steps : 
     - name: chekingapaclist
