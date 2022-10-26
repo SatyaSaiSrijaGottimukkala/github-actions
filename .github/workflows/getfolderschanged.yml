@@ -7,14 +7,14 @@ jobs :
     runs-on: ubuntu-latest
     steps : 
     - name : getbranch
-      run : echo "branch=${git branch --show-current}" >> $GITHUB_OUTPUT
+      run : echo "branchin=${git branch --show-current}" >> $GITHUB_OUTPUT
     - name : getfoldersunderDataFolder
       run : |
         arr=()
         for i in $(ls -d DataFolder/apac-stage/*/); do arr+=($i); done
         for value in "${arr[@]}"
         do 
-            echo "list_apac=$(git diff master ${{ steps.getbranch.outputs.branch }} --name-only | grep $value)" >> $GITHUB_OUTPUT
+            echo "list_apac=$(git diff master ${{ steps.getbranch.outputs.branchin }} --name-only | grep $value)" >> $GITHUB_OUTPUT
             echo $list_apac
             # if [[ $list_apac != "" ]]
             # then
@@ -25,13 +25,13 @@ jobs :
         for i in $(ls -d DataFolder/emea-stage/*/); do arr+=($i); done
         for value in "${arr[@]}"
         do 
-            echo "list_emea=$(git diff master $branch --name-only | grep $value)" >> $GITHUB_OUTPUT 
+            echo "list_emea=$(git diff master ${{ steps.getbranch.outputs.branchin }} --name-only | grep $value)" >> $GITHUB_OUTPUT 
             echo $list_emea
         done
     outputs:
       APAC_LIST : ${{ steps.getfoldersunderDataFolder.outputs.list_apac }}
       EMEA_LIST : ${{ steps.getfoldersunderDataFolder.outputs.list_emea }}
-      CURRENT_BRANCH : ${{ steps.getbranch.outputs.branch }}
+      CURRENT_BRANCH : ${{ steps.getbranch.outputs.branchin }}
 
   apacJob:
     if :  needs.commitjob.outputs.APAC_LIST != ''
