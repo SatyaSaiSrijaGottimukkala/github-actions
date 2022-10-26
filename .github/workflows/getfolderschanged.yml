@@ -7,7 +7,7 @@ jobs :
     runs-on: ubuntu-latest
     steps : 
     - name : getbranch
-      run : echo "branchin=${git branch --show-current}" >> $GITHUB_OUTPUT
+      run : echo "branchin= ${{ github.ref_name }}" >> $GITHUB_OUTPUT
     - name : getfoldersunderDataFolder
       run : |
         arr=()
