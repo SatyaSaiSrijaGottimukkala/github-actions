@@ -9,7 +9,7 @@ jobs :
     - name : getbranch
       run : echo "branchin=${{ github.ref_name }}" >> $GITHUB_OUTPUT
     - name: Checkout
-      uses: actions/checkout@v3
+      uses: actions/checkout@v1
     - name : getfoldersunderDataFolder
       run : |
         arr=()
