@@ -31,12 +31,16 @@ jobs :
         trigger_apac=0
         value=$(git diff origin/master HEAD --name-only | grep DataFolder/apac-stage/)
         echo "$value"
-        if [["$(git diff origin/master HEAD --name-only | grep DataFolder/apac-stage/)" != '']]
+        ls
+        echo "*******************************************"
+        echo "$(git diff origin/master HEAD --name-only | grep DataFolder/apac-stage/)" > out_apac.txt
+        ls
+        if [-s out_apac.txt]
         then 
           trigger_apac=1
         fi
         echo "$trigger_apac" >> $GITHUB_OUTPUT
-
+        rm -f out_apac.txt
 
         # arr=()
         # for i in $(ls -d DataFolder/emea-stage/*/); do arr+=($i); done
@@ -48,11 +52,11 @@ jobs :
 
 
         trigger_emea=0
-        value=$(git diff origin/master HEAD --name-only | grep DataFolder/emea-stage/)
-        if [["$(git diff origin/master HEAD --name-only | grep DataFolder/emea-stage/)" != '']]
-        then 
-          trigger_emea=1
-        fi
+        # value=$(git diff origin/master HEAD --name-only | grep DataFolder/emea-stage/)
+        # if [["$(git diff origin/master HEAD --name-only | grep DataFolder/emea-stage/)" != '']]
+        # then 
+        #   trigger_emea=1
+        # fi
         echo "$trigger_emea" >> $GITHUB_OUTPUT
     outputs:
       RUN_APAC : ${{ steps.getfoldersunderDataFolder.outputs.trigger_apac }}
