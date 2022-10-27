@@ -67,7 +67,8 @@ jobs :
       RUN_EMEA : ${{ steps.getfoldersunderDataFolder.outputs.trigger_emea }}
 
   apacJob:
-    if :  needs.commitjob.outputs.RUN_APAC == 'true'
+    needs : commitjob
+    if :  needs.commitjob.outputs.RUN_APAC == true
     runs-on: ubuntu-latest
     steps : 
     - name: chekingapaclist
