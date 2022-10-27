@@ -37,7 +37,7 @@ jobs :
         echo "*******************************************"
         echo "$(git diff origin/master HEAD --name-only | grep DataFolder/apac-stage/)" > out_apac.txt
         ls
-        if [-s ../github-actions/github-actions/out_apac.txt]
+        if [ -s ../github-actions/github-actions/out_apac.txt ]
         then 
           trigger_apac=1
         fi
