@@ -6,12 +6,12 @@ jobs :
   commitjob: 
     runs-on: ubuntu-latest
     steps : 
-    - name : getbranch
-      run : echo "branchin=${{ HEAD }}" 
     - name: Checkout
       uses: actions/checkout@v3
       with:
         fetch-depth: '0'
+    - name : getbranch
+      run : echo "branchin=${{ github.ref_name }}" 
     - name : getfoldersunderDataFolder
       run : |
         # arr=()
