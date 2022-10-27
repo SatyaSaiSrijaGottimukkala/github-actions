@@ -68,7 +68,7 @@ jobs :
 
   apacJob:
     needs : commitjob
-    if :  needs.commitjob.outputs.RUN_APAC == true
+    # if :  needs.commitjob.outputs.RUN_APAC == true
     runs-on: ubuntu-latest
     steps : 
     - name: chekingapaclist
