@@ -25,7 +25,8 @@ jobs :
               
         # done
         trigger_apac=0
-        if [[$(git diff origin/master HEAD --name-only | grep DataFolder/apac-stage/) != '']]
+        value=$(git diff origin/master HEAD --name-only | grep DataFolder/apac-stage/)
+        if [[$value != '']]
         then 
           trigger_apac=1
         fi
@@ -42,7 +43,8 @@ jobs :
 
 
         trigger_emea=0
-        if [[$(git diff origin/master HEAD --name-only | grep DataFolder/emea-stage/) != '']]
+        value=$(git diff origin/master HEAD --name-only | grep DataFolder/emea-stage/)
+        if [[$value != '']]
         then 
           trigger_emea=1
         fi
