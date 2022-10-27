@@ -39,9 +39,9 @@ jobs :
         ls
         if [ -n $value ]
         then 
-          echo "trigger_apac=1" >> $GITHUB_OUTPUT
+          echo "trigger_apac=true" >> $GITHUB_OUTPUT
         else
-          echo "trigger_apac=0" >> $GITHUB_OUTPUT
+          echo "trigger_apac=false" >> $GITHUB_OUTPUT
         fi
         
         rm -f out_apac.txt
@@ -67,7 +67,7 @@ jobs :
       RUN_EMEA : ${{ steps.getfoldersunderDataFolder.outputs.trigger_emea }}
 
   apacJob:
-    if :  needs.commitjob.outputs.RUN_APAC == 1
+    if :  needs.commitjob.outputs.RUN_APAC == true
     runs-on: ubuntu-latest
     steps : 
     - name: chekingapaclist
