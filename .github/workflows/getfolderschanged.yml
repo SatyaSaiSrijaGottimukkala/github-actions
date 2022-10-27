@@ -13,8 +13,8 @@ jobs :
       uses: actions/checkout@v3
       with:
         fetch-depth: '0'
-    - name: Setup tmate session
-      uses: mxschmitt/action-tmate@v3
+    # - name: Setup tmate session
+    #   uses: mxschmitt/action-tmate@v3
     - name : getbranch
       run : echo "branchin=${{ github.ref_name }}" 
     - name : getfoldersunderDataFolder
@@ -30,7 +30,7 @@ jobs :
         #     then 
               
         # done
-        trigger_apac=0
+      
         value=$(git diff origin/master HEAD --name-only | grep DataFolder/apac-stage/)
         echo "$value"
         pwd
@@ -39,9 +39,11 @@ jobs :
         ls
         if [ -n $value ]
         then 
-          trigger_apac=1
+          echo "trigger_apac=1" >> $GITHUB_OUTPUT
+        else
+          echo "trigger_apac=0" >> $GITHUB_OUTPUT
         fi
-        echo "$trigger_apac" >> $GITHUB_OUTPUT
+        
         rm -f out_apac.txt
 
         # arr=()
@@ -53,13 +55,13 @@ jobs :
         # done
 
 
-        trigger_emea=0
+        echo "trigger_emea=0" >> $GITHUB_OUTPUT
         # value=$(git diff origin/master HEAD --name-only | grep DataFolder/emea-stage/)
         # if [["$(git diff origin/master HEAD --name-only | grep DataFolder/emea-stage/)" != '']]
         # then 
         #   trigger_emea=1
         # fi
-        echo "$trigger_emea" >> $GITHUB_OUTPUT
+        
     outputs:
       RUN_APAC : ${{ steps.getfoldersunderDataFolder.outputs.trigger_apac }}
       RUN_EMEA : ${{ steps.getfoldersunderDataFolder.outputs.trigger_emea }}
