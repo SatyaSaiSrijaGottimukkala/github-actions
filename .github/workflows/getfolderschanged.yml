@@ -24,10 +24,10 @@ jobs :
         #     then 
               
         # done
-        trigger_apac=false
+        trigger_apac=0
         if [[(git diff origin/master HEAD --name-only | grep DataFolder/apac-stage/) != '']]
         then 
-          trigger_apac=true
+          trigger_apac=1
         fi
         echo "$trigger_apac" >> $GITHUB_OUTPUT
 
@@ -41,10 +41,10 @@ jobs :
         # done
 
 
-        trigger_emea=false
+        trigger_emea=0
         if [[(git diff origin/master HEAD --name-only | grep DataFolder/emea-stage/) != '']]
         then 
-          trigger_emea=true
+          trigger_emea=1
         fi
         echo "$trigger_emea" >> $GITHUB_OUTPUT
     outputs:
@@ -52,7 +52,7 @@ jobs :
       RUN_EMEA : ${{ steps.getfoldersunderDataFolder.outputs.trigger_emea }}
 
   apacJob:
-    if :  needs.commitjob.outputs.RUN_APAC == true
+    if :  needs.commitjob.outputs.RUN_APAC == 1
     runs-on: ubuntu-latest
     steps : 
     - name: chekingapaclist
