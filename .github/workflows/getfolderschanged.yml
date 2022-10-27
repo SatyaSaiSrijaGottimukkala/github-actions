@@ -31,7 +31,7 @@ jobs :
         trigger_apac=0
         value=$(git diff origin/master HEAD --name-only | grep DataFolder/apac-stage/)
         echo "$value"
-        ls
+        pwd
         echo "*******************************************"
         echo "$(git diff origin/master HEAD --name-only | grep DataFolder/apac-stage/)" > out_apac.txt
         ls
