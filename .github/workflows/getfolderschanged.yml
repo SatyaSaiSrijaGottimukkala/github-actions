@@ -14,7 +14,7 @@ jobs :
     - name : getbranch
       run : echo "branchin=${{ github.ref_name }}" 
     - name : getfoldersunderDataFolder
-      shell : bash
+      shell : sh
       run : |
         # arr=()
         # list_apac=()
