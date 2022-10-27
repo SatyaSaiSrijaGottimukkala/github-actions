@@ -27,7 +27,7 @@ jobs :
         trigger_apac=0
         value=$(git diff origin/master HEAD --name-only | grep DataFolder/apac-stage/)
         echo "$value"
-        if [[$(echo "$value") != '']]
+        if [-n $value]
         then 
           trigger_apac=1
         fi
