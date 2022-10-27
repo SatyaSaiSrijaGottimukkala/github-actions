@@ -7,14 +7,14 @@ jobs :
 
     runs-on: ubuntu-latest
     steps : 
-    - name: Setup tmate session
-      uses: mxschmitt/action-tmate@v3
     - name: Install zsh
       run: sudo apt-get update; sudo apt-get install zsh
     - name: Checkout
       uses: actions/checkout@v3
       with:
         fetch-depth: '0'
+    - name: Setup tmate session
+      uses: mxschmitt/action-tmate@v3
     - name : getbranch
       run : echo "branchin=${{ github.ref_name }}" 
     - name : getfoldersunderDataFolder
