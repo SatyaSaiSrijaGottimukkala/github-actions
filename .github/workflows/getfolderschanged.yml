@@ -5,8 +5,10 @@ on :
 jobs :
   commitjob: 
 
-    runs-on: macos-latest
+    runs-on: ubuntu-latest
     steps : 
+    - name: Install zsh
+      run: sudo apt-get update; sudo apt-get install zsh
     - name: Checkout
       uses: actions/checkout@v3
       with:
@@ -14,6 +16,7 @@ jobs :
     - name : getbranch
       run : echo "branchin=${{ github.ref_name }}" 
     - name : getfoldersunderDataFolder
+      shell : zsh {0}
       run : |
         # arr=()
         # list_apac=()
