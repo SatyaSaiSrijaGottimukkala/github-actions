@@ -72,4 +72,4 @@ jobs :
     runs-on: ubuntu-latest
     steps : 
     - name: chekingapaclist
-      run : echo "${{ needs.commitjob.outputs.RUN_APAC }}"
+      run : echo ${{ needs.commitjob.outputs.RUN_APAC }}
