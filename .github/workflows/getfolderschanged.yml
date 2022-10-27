@@ -4,6 +4,7 @@ on :
     
 jobs :
   commitjob: 
+
     runs-on: ubuntu-latest
     steps : 
     - name: Checkout
@@ -13,6 +14,7 @@ jobs :
     - name : getbranch
       run : echo "branchin=${{ github.ref_name }}" 
     - name : getfoldersunderDataFolder
+      shell : bash
       run : |
         # arr=()
         # list_apac=()
