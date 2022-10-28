@@ -18,7 +18,7 @@ jobs :
     - name : getfoldersunderDataFolder
       run : |
         value=$(git diff origin/master origin/${{ github.head_ref }} --name-only | grep DataFolder/apac-stage/)
-        if [[ -n $value ]]
+        if [[ -n "$value" ]]
         then 
           echo "trigger_apac=true" >> $GITHUB_ENV
         else
@@ -27,7 +27,7 @@ jobs :
 
         
         value2=$(git diff origin/master origin/${{ github.head_ref }} --name-only | grep DataFolder/emea-stage/)
-        if [[ -n $value2 ]]
+        if [[ -n "$value2" ]]
         then 
           echo "trigger_emea=true" >> $GITHUB_ENV
         else
