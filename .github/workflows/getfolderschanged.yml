@@ -81,7 +81,8 @@ jobs :
           temp=$(git diff origin/master origin/${{ github.head_ref }} --name-only | { grep $value || true; } )
           if [[ -n $temp ]]
           then 
-            bucket=${${value%/*}##*/}
+            differ=${value%/*}
+            bucket=${differ##*/}
             echo $bucket
           fi
         done
