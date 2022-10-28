@@ -19,11 +19,11 @@ jobs :
         value=$(git diff origin/master HEAD --name-only | grep DataFolder/apac-stage/)
         if [[ -n $value ]]
         then 
-          echo "trigger_apac=false" >> $GITHUB_ENV
+          echo "trigger_apac=true" >> $GITHUB_ENV
           echo "$trigger_apac"
           echo "say something"
         else
-          echo "trigger_apac=true" >> $GITHUB_ENV
+          echo "trigger_apac=false" >> $GITHUB_ENV
           echo "$trigger_apac"
         fi
 
@@ -37,7 +37,7 @@ jobs :
 
   apacJob:
     needs : commitjob
-    if :  needs.commitjob.outputs.RUN_APAC
+    if :  needs.commitjob.outputs.RUN_APAC == 'true'
     runs-on: ubuntu-latest
     steps : 
     - name: chekingapaclist
