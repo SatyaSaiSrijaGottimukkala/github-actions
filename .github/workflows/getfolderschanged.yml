@@ -19,23 +19,7 @@ jobs :
     - name : getfoldersunderDataFolder
       shell : zsh {0}
       run : |
-        # arr=()
-        # list_apac=()
-        # for i in $(ls -d DataFolder/apac-stage/*/); do echo "${i}"; arr+=($i); done
-        # for value in "${arr[@]}"
-        # do 
-        #     apac_obj=$(git diff origin/master HEAD --name-only | grep $value)
-        #     if [[apac_obj != ""]]
-        #     then 
-              
-        # done
-      
         value=$(git diff origin/master HEAD --name-only | grep DataFolder/apac-stage/)
-        echo "$value"
-        pwd
-        echo "*******************************************"
-        echo "$(git diff origin/master HEAD --name-only | grep DataFolder/apac-stage/)" > out_apac.txt
-        ls
         if [ -n $value ]
         then 
           echo "trigger_apac=1" >> $GITHUB_OUTPUT
@@ -60,7 +44,9 @@ jobs :
         # then 
         #   trigger_emea=1
         # fi
-        
+    - name: printoutput
+      run : |
+        echo ${{ steps.getfoldersunderDataFolder.outputs.trigger_apac }} ${{ steps.getfoldersunderDataFolder.outputs.trigger_emea }}
     outputs:
       RUN_APAC : ${{ steps.getfoldersunderDataFolder.outputs.trigger_apac }}
       RUN_EMEA : ${{ steps.getfoldersunderDataFolder.outputs.trigger_emea }}

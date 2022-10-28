@@ -34,3 +34,16 @@ do
 done
 
 git ls-tree -d -r trialbranch  --name-only | grep DataFolder/apac-stage/
+
+
+
+# arr=()
+        # list_apac=()
+        # for i in $(ls -d DataFolder/apac-stage/*/); do echo "${i}"; arr+=($i); done
+        # for value in "${arr[@]}"
+        # do 
+        #     apac_obj=$(git diff origin/master HEAD --name-only | grep $value)
+        #     if [[apac_obj != ""]]
+        #     then 
+              
+        # done
