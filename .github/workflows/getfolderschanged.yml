@@ -6,8 +6,6 @@ jobs :
   commitjob: 
     runs-on: ubuntu-latest
     steps : 
-    - name: Install zsh
-      run: sudo apt-get update; sudo apt-get install zsh
     - name: Checkout
       uses: actions/checkout@v3
       with:
@@ -17,7 +15,6 @@ jobs :
     - name : getbranch
       run : echo "branchin=${{ github.ref_name }}" 
     - name : getfoldersunderDataFolder
-      shell : zsh {0}
       run : |
         value=$(git diff origin/master HEAD --name-only | grep DataFolder/apac-stage/)
         if [ -n $value ]
@@ -26,24 +23,8 @@ jobs :
         else
           echo "trigger_apac=0" >> $GITHUB_OUTPUT
         fi
-        
-        rm -f out_apac.txt
-
-        # arr=()
-        # for i in $(ls -d DataFolder/emea-stage/*/); do arr+=($i); done
-        # for value in "${arr[@]}"
-        # do 
-        #     echo "list_emea=$(git diff origin/master HEAD --name-only | grep $value)" >> $GITHUB_OUTPUT 
-        #     echo $list_emea
-        # done
-
 
         echo "trigger_emea=0" >> $GITHUB_OUTPUT
-        # value=$(git diff origin/master HEAD --name-only | grep DataFolder/emea-stage/)
-        # if [["$(git diff origin/master HEAD --name-only | grep DataFolder/emea-stage/)" != '']]
-        # then 
-        #   trigger_emea=1
-        # fi
     - name: printoutput
       run : |
         echo ${{ steps.getfoldersunderDataFolder.outputs.trigger_apac }} ${{ steps.getfoldersunderDataFolder.outputs.trigger_emea }}
