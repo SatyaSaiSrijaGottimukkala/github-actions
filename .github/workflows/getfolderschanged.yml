@@ -10,8 +10,6 @@ jobs :
       uses: actions/checkout@v3
       with:
         fetch-depth: '0'
-    # - name: Setup tmate session
-    #   uses: mxschmitt/action-tmate@v3
     - name : getbranch
       run : echo "branchin=${{ github.ref_name }}" 
     - name : getfoldersunderDataFolder
@@ -20,17 +18,18 @@ jobs :
         if [[ -n $value ]]
         then 
           echo "trigger_apac=false" >> $GITHUB_ENV
-          echo "$trigger_apac"
-          echo "say something"
         else
           echo "trigger_apac=true" >> $GITHUB_ENV
-          echo "$trigger_apac"
         fi
 
-        echo "trigger_emea=true" >> $GITHUB_ENV
-    - name: printoutput
-      run : |
-        echo ${{ env.trigger_apac }} ${{ env.trigger_emea }}
+        
+        value2=$(git diff origin/master HEAD --name-only | grep DataFolder/emea-stage/)
+        if [[ -n $value2 ]]
+        then 
+          echo "trigger_emea=true" >> $GITHUB_ENV
+        else
+          echo "trigger_emea=false" >> $GITHUB_ENV
+        fi
     outputs:
       RUN_APAC : ${{ env.trigger_apac }}
       RUN_EMEA : ${{ env.trigger_emea }}
@@ -40,5 +39,13 @@ jobs :
     if :  needs.commitjob.outputs.RUN_APAC == 'true'
     runs-on: ubuntu-latest
     steps : 
-    - name: chekingapaclist
+    - name: checktrigger
       run : echo ${{ needs.commitjob.outputs.RUN_APAC }}
+  
+  emeaJob :
+    needs : commitjob
+    if : needs.commitjob.outputs.RUN_EMEA == 'true'
+    runs-on : ubuntu-latest
+    steps :
+    - name: checktrigger
+      run : echo ${{ needs.commitjob.outputs.RUN_EMEA }}
