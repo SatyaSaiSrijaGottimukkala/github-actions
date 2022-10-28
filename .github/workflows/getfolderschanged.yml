@@ -17,7 +17,8 @@ jobs :
     #   uses: mxschmitt/action-tmate@v3
     - name : getfoldersunderDataFolder
       run : |
-        value=$(git diff origin/master..origin/${{ github.head_ref }} --name-only | grep DataFolder/apac-stage/)
+        echo "check"
+  #       value=$(git diff origin/master..origin/${{ github.head_ref }} --name-only | grep DataFolder/apac-stage/)
   #       if [[ -n $value ]]
   #       then 
   #         echo "trigger_apac=true" >> $GITHUB_ENV
