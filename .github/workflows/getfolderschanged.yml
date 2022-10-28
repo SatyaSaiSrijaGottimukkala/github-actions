@@ -21,6 +21,7 @@ jobs :
         then 
           echo "trigger_apac='what is happening'" >> $GITHUB_OUTPUT
           echo "$trigger_apac"
+          echo "say something"
         else
           echo "trigger_apac=0" >> $GITHUB_OUTPUT
           echo "$trigger_apac"
