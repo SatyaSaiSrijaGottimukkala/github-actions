@@ -75,7 +75,7 @@ jobs :
     - name : sync
       run : |
         arr=()
-        for i in $(ls -d DataFolder/apac-stage/*/); do arr+=($i); done
+        for i in $(ls -d DataFolder/emea-stage/*/); do arr+=($i); done
         for value in "${arr[@]}"
         do 
           temp=$(git diff origin/master origin/${{ github.head_ref }} --name-only | {grep $value || true; } )
