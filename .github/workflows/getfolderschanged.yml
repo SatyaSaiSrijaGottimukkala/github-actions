@@ -44,6 +44,10 @@ jobs :
   apacJob:
     needs : commitjob
     if :  needs.commitjob.outputs.RUN_APAC == 'true'
+    environment: stage
+    permissions:
+      id-token: write
+      contents: read
     runs-on: ubuntu-latest
     steps : 
     - name: checktrigger
@@ -52,13 +56,26 @@ jobs :
       uses: actions/checkout@v3
       with:
         fetch-depth: '0'
+    - name: aws credentials
+      uses: aws-actions/configure-aws-credentials@v1
+      with:
+        aws-access-key-id: ${{ secrets.ACCESS_KEY }}
+        aws-secret-access-key: ${{ secrets.SECRET_ACCESS_KEY}}
+        aws-region: ${{ secrets.REGION }}
     - name : sync
       run : |
         arr=()
         for i in $(ls -d DataFolder/apac-stage/*/); do arr+=($i); done
         for value in "${arr[@]}"
         do 
-          echo $value
+          temp=$(git diff origin/master origin/${{ github.head_ref }} --name-only | { grep $value || true; } )
+          if [[ -n $temp ]]
+          then 
+            differ=${value%/*}
+            bucket=${differ##*/}
+            echo $bucket
+            aws s3 sync ./DataFolder/apac-stage/$bucket s3://$bucket --exclude "README.md"
+          fi
         done
   
   emeaJob :
