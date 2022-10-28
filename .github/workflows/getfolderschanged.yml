@@ -19,7 +19,7 @@ jobs :
         value=$(git diff origin/master HEAD --name-only | grep DataFolder/apac-stage/)
         if [[ -n $value ]]
         then 
-          echo "trigger_apac='what is happening'" >> $GITHUB_OUTPUT
+          echo '::set-output name=trigger_apac::new_output'
           echo "$trigger_apac"
           echo "say something"
         else
