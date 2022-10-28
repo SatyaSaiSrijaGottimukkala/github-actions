@@ -18,7 +18,7 @@ jobs :
     - name : getfoldersunderDataFolder
       run : |
         echo "check"
-        git log origin/master origin/${{ github.head_ref }}
+        git diff origin/master origin/${{ github.head_ref }}
   #       value=$(git diff origin/master..origin/${{ github.head_ref }} --name-only | grep DataFolder/apac-stage/)
   #       if [[ -n $value ]]
   #       then 
