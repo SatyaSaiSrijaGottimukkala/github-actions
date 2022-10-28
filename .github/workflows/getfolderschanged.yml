@@ -1,6 +1,7 @@
 name : getallchangedfiles
 on : 
-  push:
+  pull_request:
+    
     
 jobs :
   commitjob: 
@@ -11,19 +12,25 @@ jobs :
       with:
         fetch-depth: '0'
     - name : getbranch
-      run : echo "branchin=${{ github.ref_name }}" 
+      run : echo "branchin=${{ github.head_ref }}" 
+    # - name: Setup tmate session
+    #   uses: mxschmitt/action-tmate@v3
     - name : getfoldersunderDataFolder
       run : |
-        value=$(git diff origin/master HEAD --name-only | grep DataFolder/apac-stage/)
+        echo "check"
+        value=$(git diff origin/master origin/${{ github.head_ref }} --name-only | { grep DataFolder/apac-stage || true; } )
+        echo $value
         if [[ -n $value ]]
         then 
-          echo "trigger_apac=false" >> $GITHUB_ENV
-        else
+          echo "true"
           echo "trigger_apac=true" >> $GITHUB_ENV
+        else
+          echo "false"
+          echo "trigger_apac=false" >> $GITHUB_ENV
         fi
 
         
-        value2=$(git diff origin/master HEAD --name-only | grep DataFolder/emea-stage/)
+        value2=$(git diff origin/master origin/${{ github.head_ref }} --name-only | { grep DataFolder/emea-stage/ || true; } )
         if [[ -n $value2 ]]
         then 
           echo "trigger_emea=true" >> $GITHUB_ENV
@@ -37,10 +44,39 @@ jobs :
   apacJob:
     needs : commitjob
     if :  needs.commitjob.outputs.RUN_APAC == 'true'
+    environment: stage
+    permissions:
+      id-token: write
+      contents: read
     runs-on: ubuntu-latest
     steps : 
     - name: checktrigger
       run : echo ${{ needs.commitjob.outputs.RUN_APAC }}
+    - name: Checkout
+      uses: actions/checkout@v3
+      with:
+        fetch-depth: '0'
+    - name: aws credentials
+      uses: aws-actions/configure-aws-credentials@v1
+      with:
+        aws-access-key-id: ${{ secrets.ACCESS_KEY }}
+        aws-secret-access-key: ${{ secrets.SECRET_ACCESS_KEY}}
+        aws-region: ${{ secrets.REGION }}
+    - name : sync
+      run : |
+        arr=()
+        for i in $(ls -d DataFolder/apac-stage/*/); do arr+=($i); done
+        for value in "${arr[@]}"
+        do 
+          temp=$(git diff origin/master origin/${{ github.head_ref }} --name-only | { grep $value || true; } )
+          if [[ -n $temp ]]
+          then 
+            differ=${value%/*}
+            bucket=${differ##*/}
+            echo $bucket
+            aws s3 sync ./DataFolder/apac-stage/$bucket s3://$bucket --exclude "README.md" --delete
+          fi
+        done
   
   emeaJob :
     needs : commitjob
@@ -49,3 +85,21 @@ jobs :
     steps :
     - name: checktrigger
       run : echo ${{ needs.commitjob.outputs.RUN_EMEA }}
+    - name: Checkout
+      uses: actions/checkout@v3
+      with:
+        fetch-depth: '0'
+    - name : sync
+      run : |
+        arr=()
+        for i in $(ls -d DataFolder/emea-stage/*/); do arr+=($i); done
+        for value in "${arr[@]}"
+        do 
+          temp=$(git diff origin/master origin/${{ github.head_ref }} --name-only | { grep $value || true; } )
+          if [[ -n $temp ]]
+          then 
+            differ=${value%/*}
+            bucket=${differ##*/}
+            echo $bucket
+          fi
+        done
