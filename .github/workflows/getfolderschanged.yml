@@ -18,7 +18,6 @@ jobs :
     - name : getfoldersunderDataFolder
       run : |
         echo "check"
-        git diff origin/master origin/${{ github.head_ref }} --name-only | { grep DataFolder/apac-stage || true; } 
         value=$(git diff origin/master origin/${{ github.head_ref }} --name-only | { grep DataFolder/apac-stage || true; } )
         echo $value
         if [[ -n $value ]]
@@ -31,29 +30,29 @@ jobs :
         fi
 
         
-  #       value2=$(git diff origin/master origin/${{ github.head_ref }} --name-only | grep DataFolder/emea-stage/)
-  #       if [[ -n $value2 ]]
-  #       then 
-  #         echo "trigger_emea=true" >> $GITHUB_ENV
-  #       else
-  #         echo "trigger_emea=false" >> $GITHUB_ENV
-  #       fi
-  #   outputs:
-  #     RUN_APAC : ${{ env.trigger_apac }}
-  #     RUN_EMEA : ${{ env.trigger_emea }}
+        value2=$(git diff origin/master origin/${{ github.head_ref }} --name-only | { grep DataFolder/emea-stage/ || true; } )
+        if [[ -n $value2 ]]
+        then 
+          echo "trigger_emea=true" >> $GITHUB_ENV
+        else
+          echo "trigger_emea=false" >> $GITHUB_ENV
+        fi
+    outputs:
+      RUN_APAC : ${{ env.trigger_apac }}
+      RUN_EMEA : ${{ env.trigger_emea }}
 
-  # apacJob:
-  #   needs : commitjob
-  #   if :  needs.commitjob.outputs.RUN_APAC == 'true'
-  #   runs-on: ubuntu-latest
-  #   steps : 
-  #   - name: checktrigger
-  #     run : echo ${{ needs.commitjob.outputs.RUN_APAC }}
+  apacJob:
+    needs : commitjob
+    if :  needs.commitjob.outputs.RUN_APAC == 'true'
+    runs-on: ubuntu-latest
+    steps : 
+    - name: checktrigger
+      run : echo ${{ needs.commitjob.outputs.RUN_APAC }}
   
-  # emeaJob :
-  #   needs : commitjob
-  #   if : needs.commitjob.outputs.RUN_EMEA == 'true'
-  #   runs-on : ubuntu-latest
-  #   steps :
-  #   - name: checktrigger
-  #     run : echo ${{ needs.commitjob.outputs.RUN_EMEA }}
+  emeaJob :
+    needs : commitjob
+    if : needs.commitjob.outputs.RUN_EMEA == 'true'
+    runs-on : ubuntu-latest
+    steps :
+    - name: checktrigger
+      run : echo ${{ needs.commitjob.outputs.RUN_EMEA }}
