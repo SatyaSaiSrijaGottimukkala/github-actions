@@ -19,13 +19,15 @@ jobs :
       run : |
         echo "check"
         git diff origin/master origin/${{ github.head_ref }} --name-only | { grep DataFolder/apac-stage || true; } 
-  #       value=$(git diff origin/master..origin/${{ github.head_ref }} --name-only | grep DataFolder/apac-stage/)
-  #       if [[ -n $value ]]
-  #       then 
-  #         echo "trigger_apac=true" >> $GITHUB_ENV
-  #       else
-  #         echo "trigger_apac=false" >> $GITHUB_ENV
-  #       fi
+        value=$(git diff origin/master origin/${{ github.head_ref }} --name-only | { grep DataFolder/apac-stage || true; } )
+        if [[ $value != true ]]
+        then 
+          echo "true"
+          echo "trigger_apac=true" >> $GITHUB_ENV
+        else
+          echo "false"
+          echo "trigger_apac=false" >> $GITHUB_ENV
+        fi
 
         
   #       value2=$(git diff origin/master origin/${{ github.head_ref }} --name-only | grep DataFolder/emea-stage/)
