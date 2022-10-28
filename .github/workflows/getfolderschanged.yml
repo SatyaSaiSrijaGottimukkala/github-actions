@@ -20,8 +20,10 @@ jobs :
         if [[ -n $value ]]
         then 
           echo "trigger_apac=1" >> $GITHUB_OUTPUT
+          echo "trigger_apac"
         else
           echo "trigger_apac=0" >> $GITHUB_OUTPUT
+          echo "trigger_apac"
         fi
 
         echo "trigger_emea=0" >> $GITHUB_OUTPUT
