@@ -27,7 +27,7 @@ jobs :
           echo "$trigger_apac"
         fi
 
-        echo "trigger_emea=0" >> $GITHUB_ENV
+        echo "trigger_emea=true" >> $GITHUB_ENV
     - name: printoutput
       run : |
         echo ${{ env.trigger_apac }} ${{ env.trigger_emea }}
@@ -37,7 +37,7 @@ jobs :
 
   apacJob:
     needs : commitjob
-    # if :  needs.commitjob.outputs.RUN_APAC == true
+    if :  needs.commitjob.outputs.RUN_APAC == true
     runs-on: ubuntu-latest
     steps : 
     - name: chekingapaclist
