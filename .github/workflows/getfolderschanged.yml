@@ -20,6 +20,7 @@ jobs :
         echo "check"
         git diff origin/master origin/${{ github.head_ref }} --name-only | { grep DataFolder/apac-stage || true; } 
         value=$(git diff origin/master origin/${{ github.head_ref }} --name-only | { grep DataFolder/apac-stage || true; } )
+        echo $value
         if [[ -n $value ]]
         then 
           echo "true"
