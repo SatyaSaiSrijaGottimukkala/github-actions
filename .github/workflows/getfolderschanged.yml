@@ -13,8 +13,8 @@ jobs :
         fetch-depth: '0'
     - name : getbranch
       run : echo "branchin=${{ github.head_ref }}" 
-    - name: Setup tmate session
-      uses: mxschmitt/action-tmate@v3
+    # - name: Setup tmate session
+    #   uses: mxschmitt/action-tmate@v3
     - name : getfoldersunderDataFolder
       run : |
         echo "check"
@@ -82,4 +82,5 @@ jobs :
           if [[ -n $temp ]]
           then 
             echo ${${value%/*}##*/}
+          fi
         done
