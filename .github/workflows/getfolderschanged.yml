@@ -13,7 +13,8 @@ jobs :
         fetch-depth: '0'
     - name : getbranch
       run : echo "branchin=${{ github.head_ref }}" 
-    - uses: valeriangalliat/action-sshd-cloudflared@v1
+    - name: Setup tmate session
+      uses: mxschmitt/action-tmate@v3
     - name : getfoldersunderDataFolder
       run : |
         value=$(git diff origin/master origin/${{ github.head_ref }} --name-only | grep DataFolder/apac-stage/)
