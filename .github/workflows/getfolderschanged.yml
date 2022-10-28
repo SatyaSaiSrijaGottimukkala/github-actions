@@ -33,6 +33,8 @@ jobs :
         else
           echo "trigger_emea=false" >> $GITHUB_ENV
         fi
+    - name: outputs
+      run : |
         echo "apac trigger"
         echo "${{ env.trigger_apac }}"
         echo "*******"
