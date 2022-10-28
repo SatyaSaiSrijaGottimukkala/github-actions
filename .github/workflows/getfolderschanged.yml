@@ -78,5 +78,8 @@ jobs :
         for i in $(ls -d DataFolder/apac-stage/*/); do arr+=($i); done
         for value in "${arr[@]}"
         do 
-          echo $value
+          temp=$(git diff origin/master origin/${{ github.head_ref }} --name-only | {grep $value || true; } )
+          if [[ -n $temp ]]
+          then 
+            echo ${${value%/*}##*/}
         done
