@@ -1,6 +1,7 @@
 name : getallchangedfiles
 on : 
-  push:
+  pull_request:
+    
     
 jobs :
   commitjob: 
@@ -14,7 +15,7 @@ jobs :
       run : echo "branchin=${{ github.ref_name }}" 
     - name : getfoldersunderDataFolder
       run : |
-        value=$(git diff origin/master HEAD --name-only | grep DataFolder/apac-stage/)
+        value=$(git diff origin/master github.head_ref --name-only | grep DataFolder/apac-stage/)
         if [[ -n $value ]]
         then 
           echo "trigger_apac=true" >> $GITHUB_ENV
