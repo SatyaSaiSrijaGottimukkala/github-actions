@@ -17,9 +17,9 @@ jobs :
         value=$(git diff origin/master HEAD --name-only | grep DataFolder/apac-stage/)
         if [[ -n $value ]]
         then 
-          echo "trigger_apac=false" >> $GITHUB_ENV
-        else
           echo "trigger_apac=true" >> $GITHUB_ENV
+        else
+          echo "trigger_apac=false" >> $GITHUB_ENV
         fi
 
         
