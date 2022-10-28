@@ -15,7 +15,7 @@ jobs :
       run : echo "branchin=${{ github.head_ref }}" 
     - name : getfoldersunderDataFolder
       run : |
-        value=$(git diff origin/master ${{ github.head_ref }} --name-only | grep DataFolder/apac-stage/)
+        value=$(git diff origin/master origin/${{ github.head_ref }} --name-only | grep DataFolder/apac-stage/)
         if [[ -n $value ]]
         then 
           echo "trigger_apac=true" >> $GITHUB_ENV
@@ -24,7 +24,7 @@ jobs :
         fi
 
         
-        value2=$(git diff origin/master ${{ github.head_ref }} --name-only | grep DataFolder/emea-stage/)
+        value2=$(git diff origin/master origin/${{ github.head_ref }} --name-only | grep DataFolder/emea-stage/)
         if [[ -n $value2 ]]
         then 
           echo "trigger_emea=true" >> $GITHUB_ENV
