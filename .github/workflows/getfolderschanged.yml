@@ -68,6 +68,10 @@ jobs :
     steps :
     - name: checktrigger
       run : echo ${{ needs.commitjob.outputs.RUN_EMEA }}
+    - name: Checkout
+      uses: actions/checkout@v3
+      with:
+        fetch-depth: '0'
     - name : sync
       run : |
         arr=()
