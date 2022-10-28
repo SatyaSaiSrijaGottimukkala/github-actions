@@ -4,7 +4,6 @@ on :
     
 jobs :
   commitjob: 
-
     runs-on: ubuntu-latest
     steps : 
     - name: Install zsh
@@ -39,9 +38,9 @@ jobs :
         ls
         if [ -n $value ]
         then 
-          echo "trigger_apac=true" >> $GITHUB_OUTPUT
+          echo "trigger_apac=1" >> $GITHUB_OUTPUT
         else
-          echo "trigger_apac=false" >> $GITHUB_OUTPUT
+          echo "trigger_apac=0" >> $GITHUB_OUTPUT
         fi
         
         rm -f out_apac.txt
