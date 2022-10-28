@@ -20,10 +20,8 @@ jobs :
         value=$(git diff origin/master origin/${{ github.head_ref }} --name-only | { grep DataFolder/apac-stage || true; } )
         if [[ -n $value ]]
         then 
-          echo "true"
           echo "trigger_apac=true" >> $GITHUB_ENV
         else
-          echo "false"
           echo "trigger_apac=false" >> $GITHUB_ENV
         fi
 
@@ -35,11 +33,7 @@ jobs :
         else
           echo "trigger_emea=false" >> $GITHUB_ENV
         fi
-        echo "apac trigger"
-        echo ${{ env.trigger_apac }}
-        echo "*******"
-        echo "emea trigger"
-        echo ${{ env.trigger_emea }}
+
     outputs:
       RUN_APAC : ${{ env.trigger_apac }}
       RUN_EMEA : ${{ env.trigger_emea }}
