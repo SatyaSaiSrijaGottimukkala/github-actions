@@ -48,6 +48,14 @@ jobs :
     steps : 
     - name: checktrigger
       run : echo ${{ needs.commitjob.outputs.RUN_APAC }}
+    - name : sync
+      run : |
+        arr=()
+        for i in $(ls -d DataFolder/apac-stage/*/); do arr+=($i); done
+        for value in "${arr[@]}"
+        do 
+          echo $value
+        done
   
   emeaJob :
     needs : commitjob
