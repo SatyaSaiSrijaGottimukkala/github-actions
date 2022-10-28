@@ -19,21 +19,21 @@ jobs :
         value=$(git diff origin/master HEAD --name-only | grep DataFolder/apac-stage/)
         if [[ -n $value ]]
         then 
-          echo '::set-output name=trigger_apac::new_output'
+          echo "trigger_apac=true" >> $GITHUB_ENV
           echo "$trigger_apac"
           echo "say something"
         else
-          echo "trigger_apac=0" >> $GITHUB_OUTPUT
+          echo "trigger_apac=0" >> $GITHUB_ENV
           echo "$trigger_apac"
         fi
 
-        echo "trigger_emea=0" >> $GITHUB_OUTPUT
+        echo "trigger_emea=0" >> $GITHUB_ENV
     - name: printoutput
       run : |
-        echo ${{ steps.getfoldersunderDataFolder.outputs.trigger_apac }} ${{ steps.getfoldersunderDataFolder.outputs.trigger_emea }}
+        echo ${{ env.trigger_apac }} ${{ env.trigger_emea }}
     outputs:
-      RUN_APAC : ${{ steps.getfoldersunderDataFolder.outputs.trigger_apac }}
-      RUN_EMEA : ${{ steps.getfoldersunderDataFolder.outputs.trigger_emea }}
+      RUN_APAC : ${{ env.trigger_apac }}
+      RUN_EMEA : ${{ env.trigger_emea }}
 
   apacJob:
     needs : commitjob
