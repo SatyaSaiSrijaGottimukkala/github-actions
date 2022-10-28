@@ -74,7 +74,7 @@ jobs :
             differ=${value%/*}
             bucket=${differ##*/}
             echo $bucket
-            aws s3 sync ./DataFolder/apac-stage/$bucket s3://$bucket --exclude "README.md"
+            aws s3 sync ./DataFolder/apac-stage/$bucket s3://$bucket --exclude "README.md" --delete
           fi
         done
   
