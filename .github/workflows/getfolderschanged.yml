@@ -64,3 +64,11 @@ jobs :
     steps :
     - name: checktrigger
       run : echo ${{ needs.commitjob.outputs.RUN_EMEA }}
+    - name : sync
+      run : |
+        arr=()
+        for i in $(ls -d DataFolder/apac-stage/*/); do arr+=($i); done
+        for value in "${arr[@]}"
+        do 
+          echo $value
+        done
