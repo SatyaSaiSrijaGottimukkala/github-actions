@@ -1,0 +1,12 @@
+name: checking reusable workflow
+on : 
+  workflow_dispatch:
+    
+
+jobs:
+  apac_stage:
+    uses: ./.github/workflows/s3-template.yml
+    with: 
+      environment_name: apac-stage
+      folder_path: DataFolder/apac-stage
+  
