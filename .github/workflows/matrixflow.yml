@@ -7,6 +7,9 @@ on :
 
 jobs:
   environmentjob:
+    strategy:
+      matrix:
+        env_name: [ stage, production ]
     uses: ./.github/workflows/wfc.yml
     with: 
-      environment_name: apac-stage
+      environment_name: ${{ matrix.env_name }}
