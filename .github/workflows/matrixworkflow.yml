@@ -1,0 +1,16 @@
+name: matrix workflow
+on :
+  pull_request:
+
+jobs:
+  job1:
+    strategy:
+      matrix:
+        environment_name: [ stage, production ]
+    runs-on: ubuntu-latest
+    steps:
+    - name: workflow call
+      
+      uses: ./.github/workflows/call.yml
+      with:
+        environment_name: ${{ martix.environment_name }}
