@@ -1,6 +1,7 @@
 name: checking reusable workflow
 on : 
-  workflow_dispatch:
+  pull_request:
+    
     
 
 jobs:
