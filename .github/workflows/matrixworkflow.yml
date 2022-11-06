@@ -9,8 +9,9 @@ jobs:
         environment_name: [ stage, production ]
     runs-on: ubuntu-latest
     steps:
+    - name: Checkout
+      uses: actions/checkout@v3
     - name: workflow call
-      
       uses: ./.github/workflows/call.yml
       with:
         environment_name: ${{ matrix.environment_name }}
