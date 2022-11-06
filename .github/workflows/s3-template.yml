@@ -28,15 +28,15 @@ jobs :
         then 
           echo "changes in apac-stage files"
           echo $value1
-          echo "trigger=true" >> $GITHUB_OUTPUT
+          echo "trigger=true" >> $GITHUB_ENV
         else
-          echo "trigger=false" >> $GITHUB_OUTPUT
+          echo "trigger=false" >> $GITHUB_ENV
         fi
     - name : env setting
-      run : echo "${{ steps.triggeringWorkflow.output.trigger }}"
+      run : echo "${{ env.trigger }}"
 
     outputs:
-      RUN_NEW_ENV : ${{ steps.triggeringWorkflow.output.trigger }}
+      RUN_NEW_ENV : ${{ env.trigger }}
 
   check_output:
     needs : triggerenv
