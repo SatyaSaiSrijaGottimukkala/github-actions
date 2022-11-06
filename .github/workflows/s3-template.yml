@@ -28,19 +28,19 @@ jobs :
         then 
           echo "changes in apac-stage files"
           echo $value1
-          echo "trigger_${{inputs.environment_name}} =true" >> $GITHUB_ENV
+          echo "trigger =true" >> $GITHUB_ENV
         else
-          echo "trigger_${{inputs.environment_name}} =false" >> $GITHUB_ENV
+          echo "trigger =false" >> $GITHUB_ENV
         fi
 
     outputs:
-      RUN_${{inputs.environment_name}} : ${{ env.trigger_${{inputs.environment_name}} }}
+      RUN_new_env : ${{ env.trigger }}
 
 
 
   env_run:
     needs : trigger
-    if :  needs.trigger.outputs.RUN_${{inputs.environment_name}} == 'true'
+    if :  needs.trigger.outputs.RUN_new_env == 'true'
     environment: ${{inputs.environment_name}}
     permissions:
       id-token: write
