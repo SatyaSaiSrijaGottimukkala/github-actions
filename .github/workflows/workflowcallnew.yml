@@ -9,6 +9,8 @@ jobs:
   displayenv:
     runs-on: ubuntu-latest
     steps:
+    - name: Checkout
+      uses: actions/checkout@v3
     - name: echo env name
       run: echo "${{inputs.environment_name}}"
 
