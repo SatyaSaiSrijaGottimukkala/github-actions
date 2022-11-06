@@ -1,0 +1,12 @@
+name: checking reusable workflow
+on : 
+  pull_request:
+    
+    
+    
+
+jobs:
+  environmentjob:
+    uses: ./.github/workflows/wfc.yml
+    with: 
+      environment_name: apac-stage
