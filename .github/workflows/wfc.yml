@@ -5,10 +5,14 @@ on :
         environment_name: 
           required: true
           type: string
+        data_folder_path:
+          required: true
+          type: string
 
 jobs:
   triggerenv: 
     runs-on: ubuntu-latest
+    environment: inputs.environment_name
     steps : 
     - name: Checkout
       uses: actions/checkout@v3
@@ -16,4 +20,29 @@ jobs:
         fetch-depth: '0'
     - name : getenv
       run : echo ${{ inputs.environment_name }}
-    
+    - name: triggering
+      run : |
+        value1=$(git diff origin/master origin/${{  github.event.pull_request.head.ref }} --name-only | { grep ${{inputs.data_folder_path}}/${{ inputs.environment_name }}/ || true; } )
+        if [[ -n $value1 ]]
+        then 
+          echo "changes in apac-stage files"
+          echo $value1
+          echo "trigger=true" >> $GITHUB_ENV
+        else
+          echo "trigger=false" >> $GITHUB_ENV
+        fi
+    - name : sync
+      if : ${{ env.trigger }} == 'true'
+      run : |
+        arr=()
+        for i in $(ls -d ${{inputs.data_folder_path}}/${{ inputs.environment_name }}/*/); do arr+=($i); done
+        for value in "${arr[@]}"
+        do 
+          temp=$(git diff origin/master origin/${{ github.event.pull_request.head.ref }} --name-only | { grep $value || true; } )
+          if [[ -n $temp ]]
+          then 
+            differ=${value%/*}
+            bucket=${differ##*/}
+            echo $bucket
+          fi
+        done

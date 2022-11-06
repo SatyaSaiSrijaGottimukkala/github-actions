@@ -9,7 +9,8 @@ jobs:
   environmentjob:
     strategy:
       matrix:
-        env_name: [ stage, production ]
+        env_name: [ apac-stage, emea-stage ]
     uses: ./.github/workflows/wfc.yml
     with: 
       environment_name: ${{ matrix.env_name }}
+      data_folder_path: DataFolder
