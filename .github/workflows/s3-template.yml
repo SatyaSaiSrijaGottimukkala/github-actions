@@ -12,7 +12,7 @@ on :
     
 
 jobs : 
-  trigger: 
+  triggerenv: 
     runs-on: ubuntu-latest
     steps : 
     - name: Checkout
@@ -21,33 +21,33 @@ jobs :
         fetch-depth: '0'
     - name : getbranch
       run : echo "branchin=${{ github.event.pull_request.head.ref }}" 
-    - name : triggering
+    - name : triggeringWorkflow
       run : |
         value1=$(git diff origin/master origin/${{  github.event.pull_request.head.ref }} --name-only | { grep ${{ inputs.folder_path }} || true; } )
         if [[ -n $value1 ]]
         then 
           echo "changes in apac-stage files"
           echo $value1
-          echo "trigger =true" >> $GITHUB_OUTPUT
+          echo "trigger=true" >> $GITHUB_OUTPUT
         else
-          echo "trigger =false" >> $GITHUB_OUTPUT
+          echo "trigger=false" >> $GITHUB_OUTPUT
         fi
     - name : env setting
-      run : echo "${{ steps.triggering.output.trigger }}"
+      run : echo "${{ steps.triggeringWorkflow.output.trigger }}"
 
     outputs:
-      RUN_NEW_ENV : ${{ steps.triggering.output.trigger }}
+      RUN_NEW_ENV : ${{ steps.triggeringWorkflow.output.trigger }}
 
   check_output:
-    needs : trigger
+    needs : triggerenv
     runs-on: ubuntu-latest
     steps:
     - name: output value
-      run: echo  ${{ needs.trigger.outputs.RUN_NEW_ENV }}
+      run: echo  ${{ needs.triggerenv.outputs.RUN_NEW_ENV }}
 
   env_run:
-    needs : trigger
-    if :  needs.trigger.outputs.RUN_NEW_ENV == 'true'
+    needs : triggerenv
+    if :  needs.triggerenv.outputs.RUN_NEW_ENV == 'true'
     environment: ${{inputs.environment_name}}
     permissions:
       id-token: write
