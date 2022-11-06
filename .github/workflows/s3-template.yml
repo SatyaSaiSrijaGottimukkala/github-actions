@@ -1,0 +1,70 @@
+name : template
+on : 
+   workflow_call:
+     inputs:
+        environment_name: 
+          required: true
+          type: string
+        folder_path:
+          required: true
+          type: string
+        
+    
+
+jobs : 
+  trigger: 
+    runs-on: ubuntu-latest
+    steps : 
+    - name: Checkout
+      uses: actions/checkout@v3
+      with:
+        fetch-depth: '0'
+    - name : getbranch
+      run : echo "branchin=${{ github.event.pull_request.head.ref }}" 
+    - name : triggering
+      run : |
+        value1=$(git diff origin/master origin/${{  github.event.pull_request.head.ref }} --name-only | { grep ${{ inputs.folder_path }} || true; } )
+        if [[ -n $value1 ]]
+        then 
+          echo "changes in apac-stage files"
+          echo $value1
+          echo "trigger_${{inputs.environment_name}} =true" >> $GITHUB_ENV
+        else
+          echo "trigger_${{inputs.environment_name}} =false" >> $GITHUB_ENV
+        fi
+
+    outputs:
+      RUN_${{inputs.environment_name}} : ${{ env.trigger_${{inputs.environment_name}} }}
+
+
+
+  env_run:
+    needs : trigger
+    if :  needs.trigger.outputs.RUN_${{inputs.environment_name}} == 'true'
+    environment: ${{inputs.environment_name}}
+    permissions:
+      id-token: write
+      contents: read
+    runs-on: ubuntu-latest
+    steps : 
+    - name: Checkout
+      uses: actions/checkout@v3
+      with:
+        fetch-depth: '0'
+    - name : sync
+      run : |
+        arr=()
+        for i in $(ls -d Data/apac-stage/*/); do arr+=($i); done
+        for value in "${arr[@]}"
+        do 
+          temp=$(git diff origin/master origin/${{  github.event.pull_request.head.ref }} --name-only | { grep $value || true; } )
+          if [[ -n $temp ]]
+          then 
+            differ=${value%/*}
+            bucket=${differ##*/}
+            echo $bucket
+          fi
+        done
+
+  
+  
