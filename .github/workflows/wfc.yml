@@ -32,7 +32,7 @@ jobs:
           echo "trigger=false" >> $GITHUB_ENV
         fi
     - name : sync
-      if : false
+      if : ${{ env.trigger == true }}
       run : |
         arr=()
         for i in $(ls -d ${{inputs.data_folder_path}}/${{ inputs.environment_name }}/*/); do arr+=($i); done
