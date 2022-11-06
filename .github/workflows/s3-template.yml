@@ -34,13 +34,13 @@ jobs :
         fi
 
     outputs:
-      RUN_new_env : ${{ env.trigger }}
+      RUN_NEW_ENV : ${{ env.trigger }}
 
 
 
   env_run:
     needs : trigger
-    if :  needs.trigger.outputs.RUN_new_env == 'true'
+    if :  needs.trigger.outputs.RUN_NEW_ENV == 'true'
     environment: ${{inputs.environment_name}}
     permissions:
       id-token: write
