@@ -13,4 +13,4 @@ jobs:
       
       uses: ./.github/workflows/call.yml
       with:
-        environment_name: ${{ martix.environment_name }}
+        environment_name: ${{ matrix.environment_name }}
