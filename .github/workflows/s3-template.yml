@@ -38,7 +38,12 @@ jobs :
     outputs:
       RUN_NEW_ENV : ${{ env.trigger }}
 
-
+  check_output:
+    needs : trigger
+    runs-on: ubuntu-latest
+    steps:
+    - name: output value
+      run: echo "${{ needs.trigger.outputs.RUN_NEW_ENV }}"
 
   env_run:
     needs : trigger
