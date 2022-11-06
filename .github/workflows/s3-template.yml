@@ -33,7 +33,7 @@ jobs :
           echo "trigger =false" >> $GITHUB_OUTPUT
         fi
     - name : env setting
-      run : echo "${{ env.trigger }}"
+      run : echo "${{ steps.triggering.output.trigger }}"
 
     outputs:
       RUN_NEW_ENV : ${{ steps.triggering.output.trigger }}
