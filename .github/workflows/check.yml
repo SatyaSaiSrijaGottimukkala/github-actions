@@ -5,7 +5,7 @@ on :
 
 jobs:
   apac_stage:
-    uses: .github/workflows/s3-template.yml
+    uses: ./.github/workflows/s3-template.yml
     with: 
       environment_name: apac-stage
       folder_path: DataFolder/apac-stage
