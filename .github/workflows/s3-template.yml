@@ -32,6 +32,8 @@ jobs :
         else
           echo "trigger =false" >> $GITHUB_ENV
         fi
+    - name : env setting
+      run : echo "${{ env.trigger }}"
 
     outputs:
       RUN_NEW_ENV : ${{ env.trigger }}
