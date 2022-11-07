@@ -34,7 +34,9 @@ jobs :
         fi
     # - name : env setting
     #   run : echo "${{ env.trigger }}"
-
+    - name: sync
+      if: ${{ env.trigger == 'true'}}
+      run: echo "checking "
     outputs:
       RUN_NEW_ENV : ${{ env.trigger }}
 
