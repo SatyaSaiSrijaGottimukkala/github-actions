@@ -19,8 +19,8 @@ jobs :
       uses: actions/checkout@v3
       with:
         fetch-depth: '0'
-    - name : getbranch
-      run : echo "branchin=${{ github.event.pull_request.head.ref }}" 
+    # - name : getbranch
+    #   run : echo "branchin=${{ github.event.pull_request.head.ref }}" 
     - name : triggeringWorkflow
       run : |
         value1=$(git diff origin/master origin/${{  github.event.pull_request.head.ref }} --name-only | { grep ${{ inputs.folder_path }}/${{ inputs.environment_name }}/ || true; } )
@@ -32,18 +32,12 @@ jobs :
         else
           echo "trigger=false" >> $GITHUB_ENV
         fi
-    - name : env setting
-      run : echo "${{ env.trigger }}"
+    # - name : env setting
+    #   run : echo "${{ env.trigger }}"
 
     outputs:
       RUN_NEW_ENV : ${{ env.trigger }}
 
-  # check_output:
-  #   needs : triggerenv
-  #   runs-on: ubuntu-latest
-  #   steps:
-  #   - name: output value
-  #     run: echo  ${{ needs.triggerenv.outputs.RUN_NEW_ENV }}
 
   env_run:
     needs : triggerenv
