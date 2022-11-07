@@ -49,37 +49,34 @@ jobs :
               echo $bucket
             fi
           done
-    outputs:
-      RUN_NEW_ENV : ${{ env.trigger }}
+    # outputs:
+    #   RUN_NEW_ENV : ${{ env.trigger }}
 
 
-  env_run:
-    needs : triggerenv
-    if :  needs.triggerenv.outputs.RUN_NEW_ENV == 'true'
-    environment: ${{inputs.environment_name}}
-    permissions:
-      id-token: write
-      contents: read
-    runs-on: ubuntu-latest
-    steps : 
-    - name: Checkout
-      uses: actions/checkout@v3
-      with:
-        fetch-depth: '0'
-    - name : sync
-      run : |
-        arr=()
-        for i in $(ls -d ${{ inputs.folder_path }}/${{ inputs.environment_name }}/*/); do arr+=($i); done
-        for value in "${arr[@]}"
-        do 
-          temp=$(git diff origin/master origin/${{  github.event.pull_request.head.ref }} --name-only | { grep $value || true; } )
-          if [[ -n $temp ]]
-          then 
-            differ=${value%/*}
-            bucket=${differ##*/}
-            echo $bucket
-          fi
-        done
-
-  
-  
+  # env_run:
+  #   needs : triggerenv
+  #   if :  needs.triggerenv.outputs.RUN_NEW_ENV == 'true'
+  #   environment: ${{inputs.environment_name}}
+  #   permissions:
+  #     id-token: write
+  #     contents: read
+  #   runs-on: ubuntu-latest
+  #   steps : 
+  #   - name: Checkout
+  #     uses: actions/checkout@v3
+  #     with:
+  #       fetch-depth: '0'
+  #   - name : sync
+  #     run : |
+  #       arr=()
+  #       for i in $(ls -d ${{ inputs.folder_path }}/${{ inputs.environment_name }}/*/); do arr+=($i); done
+  #       for value in "${arr[@]}"
+  #       do 
+  #         temp=$(git diff origin/master origin/${{  github.event.pull_request.head.ref }} --name-only | { grep $value || true; } )
+  #         if [[ -n $temp ]]
+  #         then 
+  #           differ=${value%/*}
+  #           bucket=${differ##*/}
+  #           echo $bucket
+  #         fi
+  #       done
