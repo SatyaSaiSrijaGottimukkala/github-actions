@@ -12,59 +12,71 @@ on :
     
 
 jobs : 
-  trigger: 
+  triggerenv: 
     runs-on: ubuntu-latest
     steps : 
     - name: Checkout
       uses: actions/checkout@v3
       with:
         fetch-depth: '0'
-    - name : getbranch
-      run : echo "branchin=${{ github.event.pull_request.head.ref }}" 
-    - name : triggering
+    # - name : getbranch
+    #   run : echo "branchin=${{ github.event.pull_request.head.ref }}" 
+    - name : triggeringWorkflow
       run : |
-        value1=$(git diff origin/master origin/${{  github.event.pull_request.head.ref }} --name-only | { grep ${{ inputs.folder_path }} || true; } )
+        value1=$(git diff origin/master origin/${{  github.event.pull_request.head.ref }} --name-only | { grep ${{ inputs.folder_path }}/${{ inputs.environment_name }}/ || true; } )
         if [[ -n $value1 ]]
         then 
           echo "changes in apac-stage files"
           echo $value1
-          echo "trigger_${{inputs.environment_name}} =true" >> $GITHUB_ENV
+          echo "trigger=true" >> $GITHUB_ENV
         else
-          echo "trigger_${{inputs.environment_name}} =false" >> $GITHUB_ENV
+          echo "trigger=false" >> $GITHUB_ENV
         fi
-
-    outputs:
-      RUN_${{inputs.environment_name}} : ${{ env.trigger_${{inputs.environment_name}} }}
-
-
-
-  env_run:
-    needs : trigger
-    if :  needs.trigger.outputs.RUN_${{inputs.environment_name}} == 'true'
-    environment: ${{inputs.environment_name}}
-    permissions:
-      id-token: write
-      contents: read
-    runs-on: ubuntu-latest
-    steps : 
-    - name: Checkout
-      uses: actions/checkout@v3
-      with:
-        fetch-depth: '0'
-    - name : sync
-      run : |
+    # - name : env setting
+    #   run : echo "${{ env.trigger }}"
+    - name: sync
+      if: ${{ env.trigger == 'true'}}
+      run: |
         arr=()
-        for i in $(ls -d Data/apac-stage/*/); do arr+=($i); done
-        for value in "${arr[@]}"
-        do 
-          temp=$(git diff origin/master origin/${{  github.event.pull_request.head.ref }} --name-only | { grep $value || true; } )
-          if [[ -n $temp ]]
-          then 
-            differ=${value%/*}
-            bucket=${differ##*/}
-            echo $bucket
-          fi
-        done
+          for i in $(ls -d ${{ inputs.folder_path }}/${{ inputs.environment_name }}/*/); do arr+=($i); done
+          for value in "${arr[@]}"
+          do 
+            temp=$(git diff origin/master origin/${{  github.event.pull_request.head.ref }} --name-only | { grep $value || true; } )
+            if [[ -n $temp ]]
+            then 
+              differ=${value%/*}
+              bucket=${differ##*/}
+              echo $bucket
+            fi
+          done
+    # outputs:
+    #   RUN_NEW_ENV : ${{ env.trigger }}
 
-  
-  
+
+  # env_run:
+  #   needs : triggerenv
+  #   if :  needs.triggerenv.outputs.RUN_NEW_ENV == 'true'
+  #   environment: ${{inputs.environment_name}}
+  #   permissions:
+  #     id-token: write
+  #     contents: read
+  #   runs-on: ubuntu-latest
+  #   steps : 
+  #   - name: Checkout
+  #     uses: actions/checkout@v3
+  #     with:
+  #       fetch-depth: '0'
+  #   - name : sync
+  #     run : |
+  #       arr=()
+  #       for i in $(ls -d ${{ inputs.folder_path }}/${{ inputs.environment_name }}/*/); do arr+=($i); done
+  #       for value in "${arr[@]}"
+  #       do 
+  #         temp=$(git diff origin/master origin/${{  github.event.pull_request.head.ref }} --name-only | { grep $value || true; } )
+  #         if [[ -n $temp ]]
+  #         then 
+  #           differ=${value%/*}
+  #           bucket=${differ##*/}
+  #           echo $bucket
+  #         fi
+  #       done
