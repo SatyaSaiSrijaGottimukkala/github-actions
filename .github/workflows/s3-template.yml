@@ -23,7 +23,7 @@ jobs :
       run : echo "branchin=${{ github.event.pull_request.head.ref }}" 
     - name : triggeringWorkflow
       run : |
-        value1=$(git diff origin/master origin/${{  github.event.pull_request.head.ref }} --name-only | { grep ${{ inputs.folder_path }} || true; } )
+        value1=$(git diff origin/master origin/${{  github.event.pull_request.head.ref }} --name-only | { grep ${{ inputs.folder_path }}/${{ inputs.environment_name }}/ || true; } )
         if [[ -n $value1 ]]
         then 
           echo "changes in apac-stage files"
@@ -38,12 +38,12 @@ jobs :
     outputs:
       RUN_NEW_ENV : ${{ env.trigger }}
 
-  check_output:
-    needs : triggerenv
-    runs-on: ubuntu-latest
-    steps:
-    - name: output value
-      run: echo  ${{ needs.triggerenv.outputs.RUN_NEW_ENV }}
+  # check_output:
+  #   needs : triggerenv
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #   - name: output value
+  #     run: echo  ${{ needs.triggerenv.outputs.RUN_NEW_ENV }}
 
   env_run:
     needs : triggerenv
@@ -61,7 +61,7 @@ jobs :
     - name : sync
       run : |
         arr=()
-        for i in $(ls -d Data/apac-stage/*/); do arr+=($i); done
+        for i in $(ls -d ${{ inputs.folder_path }}/${{ inputs.environment_name }}/*/); do arr+=($i); done
         for value in "${arr[@]}"
         do 
           temp=$(git diff origin/master origin/${{  github.event.pull_request.head.ref }} --name-only | { grep $value || true; } )

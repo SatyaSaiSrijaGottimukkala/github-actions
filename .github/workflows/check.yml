@@ -1,15 +1,18 @@
 name: checking reusable workflow
 on : 
-  # pull_request:
-  workflow_dispatch:
+  pull_request:
+  # workflow_dispatch:
     
     
     
 
 jobs:
-  apac_stage:
+  jobs-on-workflowcall-matrix:
+    strategy:
+      matrix:
+        env_name: [ apac-stage, emea-stage ]
     uses: ./.github/workflows/s3-template.yml
     with: 
-      environment_name: apac-stage
-      folder_path: DataFolder/apac-stage
+      environment_name: ${{ matrix.env_name }}
+      folder_path: DataFolder
   
